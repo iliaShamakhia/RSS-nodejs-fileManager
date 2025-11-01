@@ -176,7 +176,6 @@ function copyFile(source, destination) {
 
     pipeline(readStream, writeStream, (err) => {
         if (err) printOperationFailed();
-        printCurrentDirectory();
     });
 }
 
