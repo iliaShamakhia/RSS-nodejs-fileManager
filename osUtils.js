@@ -1,5 +1,5 @@
 import { homedir, cpus, EOL, userInfo, arch } from 'node:os';
-import { printInvalidInput } from './consoleUtils';
+import { printInvalidInput } from './consoleUtils.js';
 
 export function handleOSCommand(option) {
     switch (option) {

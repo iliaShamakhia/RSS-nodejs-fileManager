@@ -2,7 +2,7 @@ import { createBrotliCompress, createBrotliDecompress } from 'node:zlib';
 import { createReadStream, createWriteStream } from 'node:fs';
 import { pipeline } from 'node:stream';
 import { resolve } from 'node:path';
-import { printOperationFailed } from './consoleUtils';
+import { printOperationFailed } from './consoleUtils.js';
 
 export function compressFile(currentDir, source, destination) {
     const sourcePath = resolve(currentDir, source);

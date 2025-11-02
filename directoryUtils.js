@@ -1,23 +1,32 @@
 import { resolve, join, dirname } from 'node:path';
 import { readdir, stat, access } from 'node:fs/promises';
 import { mkdir } from 'node:fs/promises';
-import { printOperationFailed } from './consoleUtils';
+import { printOperationFailed } from './consoleUtils.js';
+
+export function parseArgs(input) {
+    if (!input){
+        return [];
+    }
+    const regex = /(?:[^\s"]+|"[^"]*")+/g;
+    return input?.match(regex)?.map(arg => arg.replace(/^"|"$/g, ''));
+}
 
 export function goUp(currentDir) {
     const parentDir = dirname(currentDir);
     if (parentDir !== currentDir) {
         currentDir = parentDir;
     }
+    return currentDir;
 }
 
 export async function changeDirectory(currentDir, path) {
     const newPath = resolve(currentDir, path);
     try{
         await access(newPath);
-        currentDir = newPath;
     }catch(e){
         printOperationFailed();
     }
+    return newPath;
 }
 
 export async function createDirectory(currentDir, name) {

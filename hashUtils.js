@@ -1,7 +1,7 @@
 import { createReadStream } from 'node:fs';
 import { resolve } from 'node:path';
 import { createHash } from 'node:crypto';
-import { printOperationFailed } from './consoleUtils';
+import { printOperationFailed } from './consoleUtils.js';
 
 export function calculateHash(currentDir, path) {
     const filePath = resolve(currentDir, path);

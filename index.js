@@ -1,13 +1,13 @@
-import { printCurrentDirectory, printGoodbye, printOperationFailed, printWelcome, printInvalidInput } from './consoleUtils';
-import { goUp, changeDirectory, listDirectory } from './directoryUtils';
-import { compressFile, decompressFile } from './fileCompressUtils';
-import { readFile, createFile, renameFile, copyFile, moveFile, deleteFile, currentDir } from './fileUtils';
-import { handleOSCommand } from './osUtils';
-import { calculateHash } from './hashUtils';
+import { printCurrentDirectory, printGoodbye, printOperationFailed, printWelcome, printInvalidInput } from './consoleUtils.js';
+import { parseArgs, goUp, changeDirectory, createDirectory, listDirectory } from './directoryUtils.js';
+import { compressFile, decompressFile } from './fileCompressUtils.js';
+import { readFile, createFile, renameFile, copyFile, moveFile, deleteFile } from './fileUtils.js';
+import { handleOSCommand } from './osUtils.js';
+import { calculateHash } from './hashUtils.js';
 import { homedir } from 'node:os';
 
 const username = process.argv.find(arg => arg.startsWith('--username='))?.split('=')[1] || 'Anonymous';
-const currentDir = homedir();
+let currentDir = homedir();
 
 printWelcome(username);
 printCurrentDirectory(currentDir);
@@ -19,15 +19,15 @@ process.on("SIGINT", () => {
 
 process.stdin.on('data', async (data) => {
     const input = data.toString().trim();
-    const [command, ...args] = input.split(' ');
+    const [command, ...args] = parseArgs(input);
 
     try {
         switch (command) {
             case 'up':
-                goUp(currentDir);
+                currentDir = goUp(currentDir);
                 break;
             case 'cd':
-                await changeDirectory(currentDir, args[0]);
+                currentDir = await changeDirectory(currentDir, args[0]);
                 break;
             case 'ls':
                 await listDirectory(currentDir);
@@ -45,7 +45,7 @@ process.stdin.on('data', async (data) => {
                 await renameFile(currentDir, args[0], args[1]);
                 break;
             case 'cp':
-                copyFile(currentDir, args[0], args[1]);
+                await copyFile(currentDir, args[0], args[1]);
                 break;
             case 'mv':
                 await moveFile(currentDir, args[0], args[1]);
@@ -75,5 +75,5 @@ process.stdin.on('data', async (data) => {
         printOperationFailed();
     }
 
-    printCurrentDirectory();
+    printCurrentDirectory(currentDir);
 });
