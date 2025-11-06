@@ -1,6 +1,6 @@
 import { cp, rename, unlink, writeFile } from 'node:fs/promises';
 import { createReadStream } from 'node:fs';
-import { resolve, join } from 'node:path';
+import { basename, resolve, join } from 'node:path';
 import { printCurrentDirectory, printOperationFailed } from './consoleUtils.js';
 
 export function readFile(currentDir, path) {
@@ -32,7 +32,8 @@ export async function renameFile(currentDir, oldName, newName) {
 
 export async function copyFile(currentDir, source, destination, toDelete = false) {
     const sourcePath = resolve(currentDir, source);
-    const destPath = resolve(currentDir, destination);
+    const fileName = basename(sourcePath);
+    const destPath = resolve(currentDir, destination, fileName);
 
     try{
         await cp(sourcePath, destPath);
