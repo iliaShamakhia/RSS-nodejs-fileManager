@@ -1,0 +1,13 @@
+{
+  "name": "rss-nodejs-filemanager",
+  "type": "module",
+  "version": "1.0.0",
+  "description": "rss-nodejs-file-manager-task",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "author": "ilia-shamakhia",
+  "license": "ISC"
+}
